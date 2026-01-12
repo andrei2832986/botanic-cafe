@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meniu - Botanic Cafe</title>
+    <link rel="icon" type="image/jpeg" href="foto/logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .menu-page {
+            padding-top: 90px;
+            background: var(--bg-primary);
+            min-height: 100vh;
+        }
+
+        .menu-header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .menu-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 15px var(--green-glow);
+        }
+
+        .menu-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .menu-categories {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .menu-category {
+            margin-bottom: 2.5rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 4px 20px var(--shadow-dark);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .menu-category:hover {
+            box-shadow: 0 6px 25px var(--shadow-dark), 0 0 15px var(--green-glow);
+        }
+
+        .category-header {
+            cursor: pointer;
+            padding: 1.8rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+            border-bottom: 1px solid transparent;
+        }
+
+        .category-header:hover {
+            background: rgba(36, 115, 92, 0.1);
+            border-bottom-color: var(--border-color);
+        }
+
+        .category-header.active {
+            background: rgba(36, 115, 92, 0.15);
+            border-bottom-color: var(--primary-green);
+        }
+
+        .category-header:active {
+            transform: scale(0.98);
+        }
+
+        .category-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .category-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            transition: transform 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+            line-height: 1;
+            margin-left: 1rem;
+            text-shadow: 0 0 5px var(--green-glow);
+        }
+
+        .category-header:hover .category-arrow {
+            color: var(--primary-green);
+        }
+
+        .category-header.active .category-arrow {
+            transform: rotate(180deg);
+        }
+
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 2.5rem;
+        }
+
+        .category-content.open {
+            max-height: 5000px;
+            padding: 2rem 2.5rem 2.5rem;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .menu-item-detailed {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary-green);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+
+        /* Individual item styles will override the default */
+
+        .menu-item-detailed:hover {
+            transform: translateX(3px);
+            box-shadow: 0 4px 15px var(--shadow-dark), 0 0 10px var(--green-glow);
+        }
+
+        /* Stiluri personalizate pentru fiecare băutură */
+        /* Cafea - folosesc stilul default */
+        /* Băuturi Calde - folosesc stilul default */
+
+        /* Refreshers */
+        .item-fresh-portocale {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(255, 140, 0, 0.08));
+            border-left-color: rgba(255, 140, 0, 0.5);
+        }
+        .item-fresh-portocale:hover {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.16), rgba(255, 140, 0, 0.12));
+            border-left-color: rgba(255, 140, 0, 0.7);
+        }
+
+        .item-fresh-grapefruit {
+            background: linear-gradient(135deg, rgba(255, 192, 203, 0.12), rgba(255, 182, 193, 0.08));
+            border-left-color: rgba(255, 105, 180, 0.5);
+        }
+        .item-fresh-grapefruit:hover {
+            background: linear-gradient(135deg, rgba(255, 192, 203, 0.16), rgba(255, 182, 193, 0.12));
+            border-left-color: rgba(255, 105, 180, 0.7);
+        }
+
+        .item-fresh-mixt {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 20, 147, 0.08), rgba(50, 205, 50, 0.08));
+            border-left-color: rgba(255, 140, 0, 0.5);
+        }
+        .item-fresh-mixt:hover {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.14), rgba(255, 20, 147, 0.12), rgba(50, 205, 50, 0.12));
+            border-left-color: rgba(255, 140, 0, 0.7);
+        }
+
+        .item-limonada {
+            background: rgba(255, 255, 0, 0.1);
+            border-left-color: rgba(255, 215, 0, 0.5);
+        }
+        .item-limonada:hover {
+            background: rgba(255, 255, 0, 0.14);
+            border-left-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .item-classic-lemonade {
+            background: rgba(255, 255, 0, 0.12);
+            border-left-color: rgba(255, 215, 0, 0.5);
+        }
+        .item-classic-lemonade:hover {
+            background: rgba(255, 255, 0, 0.16);
+            border-left-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .item-mint-lemonade {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.12), rgba(255, 255, 0, 0.08));
+            border-left-color: rgba(50, 205, 50, 0.5);
+        }
+        .item-mint-lemonade:hover {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.16), rgba(255, 255, 0, 0.12));
+            border-left-color: rgba(50, 205, 50, 0.7);
+        }
+
+        .item-passion-lemonade {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(255, 20, 147, 0.08));
+            border-left-color: rgba(255, 140, 0, 0.5);
+        }
+        .item-passion-lemonade:hover {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.16), rgba(255, 20, 147, 0.12));
+            border-left-color: rgba(255, 140, 0, 0.7);
+        }
+
+        .item-strawberry-lemonade {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.12), rgba(255, 20, 147, 0.08));
+            border-left-color: rgba(255, 105, 180, 0.5);
+        }
+        .item-strawberry-lemonade:hover {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.16), rgba(255, 20, 147, 0.12));
+            border-left-color: rgba(255, 105, 180, 0.7);
+        }
+
+        /* Cocktail-uri */
+        .item-coconut-citrus {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 165, 0, 0.1), rgba(255, 255, 0, 0.08));
+            border-left-color: rgba(255, 215, 0, 0.5);
+        }
+        .item-coconut-citrus:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 165, 0, 0.14), rgba(255, 255, 0, 0.12));
+            border-left-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .item-berry-blossom {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.12), rgba(255, 20, 147, 0.1), rgba(221, 160, 221, 0.08));
+            border-left-color: rgba(255, 105, 180, 0.5);
+        }
+        .item-berry-blossom:hover {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.16), rgba(255, 20, 147, 0.14), rgba(221, 160, 221, 0.12));
+            border-left-color: rgba(255, 105, 180, 0.7);
+        }
+
+        /* Băuturi Răcoritoare - folosesc stilul default */
+
+        /* Smoothies */
+        .item-strawberry-smoothie {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.15), rgba(255, 20, 147, 0.1));
+            border-left-color: rgba(255, 105, 180, 0.6);
+        }
+        .item-strawberry-smoothie:hover {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(255, 20, 147, 0.15));
+            border-left-color: rgba(255, 105, 180, 0.8);
+        }
+
+        .item-nutty-smoothie {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.12), rgba(160, 82, 45, 0.08));
+            border-left-color: rgba(139, 69, 19, 0.6);
+        }
+        .item-nutty-smoothie:hover {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.16), rgba(160, 82, 45, 0.12));
+            border-left-color: rgba(139, 69, 19, 0.8);
+        }
+
+        /* Bere - folosesc stilul default */
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .item-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--primary-green);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 10px var(--green-glow);
+        }
+
+        .item-size {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-top: 0.5rem;
+            text-shadow: 0 0 8px var(--green-glow);
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 90px;
+            left: 1.5rem;
+            z-index: 999;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-green);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--green-glow), 0 0 15px var(--green-glow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .back-button:hover {
+            background: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--green-glow), 0 0 25px var(--green-glow);
+            color: var(--white);
+        }
+
+        .menu-footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .menu-footer p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .menu-footer a {
+            color: var(--primary-green);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .menu-footer a:hover {
+            color: var(--accent-green);
+            opacity: 1;
+            text-shadow: 0 0 8px var(--green-glow);
+        }
+
+        @media (min-width: 768px) {
+            .menu-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu-header h1 {
+                font-size: 5rem;
+            }
+
+            .back-button {
+                position: static;
+                display: inline-block;
+                margin: 2rem 1.5rem;
+            }
+
+            .item-header {
+                flex-wrap: nowrap;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .menu-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu-category {
+                padding: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="foto/logo.jpg" alt="Botanic Cafe Logo">
+                <span>BOTANIC CAFE</span>
+            </div>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Acasă</a></li>
+                <li><a href="index.html#about">Despre</a></li>
+                <li><a href="menu.html">Meniu</a></li>
+                <li><a href="index.html#gallery">Galerie</a></li>
+                <li><a href="index.html#testimonials">Recenzii</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="menu-page">
+        <a href="index.html" class="back-button">← Înapoi</a>
+        
+        <div class="menu-header">
+            <h1>Meniul Nostru</h1>
+            <p>Descoperă aromele și savoarea fiecărei băuturi</p>
+        </div>
+
+        <div class="menu-categories">
+            <!-- Coffee Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Cafea</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-ristretto">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Ristretto</h3>
+                                <span class="item-size">20ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">13 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-espresso">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Espresso</h3>
+                                <span class="item-size">30ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">13 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-espresso-macchiato">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Espresso Macchiato</h3>
+                                <span class="item-size">50ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">Espresso 30ml, spumă de lapte 20ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-espresso-doppio">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Espresso Doppio</h3>
+                                <span class="item-size">60ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">17 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-cafe-lungo">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cafe Lungo</h3>
+                                <span class="item-size">60ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">13 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-americano">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Americano</h3>
+                                <span class="item-size">90ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">13 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-cortado">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cortado</h3>
+                                <span class="item-size">80ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">19 lei</span>
+                        <p class="item-description">Ristretto 40ml, crema de lapte 40ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-cappuccino">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">19 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 150ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-flat-white">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Flat White</h3>
+                                <span class="item-size">220ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">23 lei</span>
+                        <p class="item-description">Espresso 60ml, crema de lapte 160ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-latte-macchiato">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Latte Macchiato</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                        <p class="item-description">Espresso 30ml, spumă de lapte 150ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-freddo-cafe">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Freddo Cafe</h3>
+                                <span class="item-size">120ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">Espresso 30ml, zahăr brun 5g, gheață</p>
+                    </div>
+                    <div class="menu-item-detailed item-freddo-cappuccino">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Freddo Cappuccino</h3>
+                                <span class="item-size">400ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 90ml, zahăr brun 5g, gheață</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specials Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Specials</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino & Caramel</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, Crema de lapte 110ml, sirop caramel 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino & Salted Caramel</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, Crema de lapte 110ml, sirop caramel sarat 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino & Chocolate Cookie</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, Crema de lapte 110ml, sirop chocolate cookies 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino & Cocos</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, Crema de lapte 110ml, sirop cocos 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Cappuccino & Gingerbread</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, Crema de lapte 110ml, sirop gingerbread 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Caramel Latte</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, spuma de lapte 140ml, sirop caramel 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Salted Caramel Latte</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, spuma de lapte 140ml, sirop caramel sarat 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Chocolate Cookie Latte</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, spuma de lapte 140ml, sirop chocolate cookie 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Coconut Latte</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, spuma de lapte 140ml, sirop coconut 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Gingerbread Latte</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, spuma de lapte 140ml, sirop gingerbread 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Oreo Frappe</h3>
+                                <span class="item-size">400ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">24 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 120ml, topping de ciocolata 20ml, frisca, gheata, oreo</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Frappe</h3>
+                            </div>
+                        </div>
+                        <span class="item-price">20 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 120ml, topping de ciocolata 20ml, frisca, gheata</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Caramel Frappe</h3>
+                                <span class="item-size">400ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 120ml, topping de caramel 20ml, frisca, gheata</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Honey Cold Espresso</h3>
+                            </div>
+                        </div>
+                        <span class="item-price">17 lei</span>
+                        <p class="item-description">Espresso 30ml, sirop de miere 15ml, gheata, coaja de lamaie</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Orange Cold Latte</h3>
+                            </div>
+                        </div>
+                        <span class="item-price">25 lei</span>
+                        <p class="item-description">Espresso 30ml, crema de lapte 90ml, sirop vanilie 10ml, gheata, coaja de portocala</p>
+                    </div>
+                    <div class="menu-item-detailed">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Espresso Tonic</h3>
+                                <span class="item-size">180ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">22 lei</span>
+                        <p class="item-description">Espresso 30ml, apa tonica 120ml, lime, gheata</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hot Drinks Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Băuturi Calde</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-hot-chocolate">
+                        <div class="item-header">
+                            <h3 class="item-name">Hot Chocolate</h3>
+                        </div>
+                        <span class="item-price">17 lei</span>
+                        <p class="item-description">Black / White</p>
+                    </div>
+                    <div class="menu-item-detailed item-hot-chocolate-special">
+                        <div class="item-header">
+                            <h3 class="item-name">Hot Chocolate Special</h3>
+                        </div>
+                        <span class="item-price">19 lei</span>
+                        <p class="item-description">Caramel / Coconut / Dark & Hazelnuts</p>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-menta">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai de Mentă</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-musetel">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai Mușetel</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-fructe-padure">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai Fructe de Pădure</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-fructul-pasiunii">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai Fructul Pasiunii</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-lamaie">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai de Lămâie</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-verde">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai Verde</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-ceai-negru">
+                        <div class="item-header">
+                            <h3 class="item-name">Ceai Negru</h3>
+                        </div>
+                        <span class="item-price">18 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-special-tea-forest">
+                        <div class="item-header">
+                            <h3 class="item-name">Special Hot Tea Forest Fruit</h3>
+                        </div>
+                        <span class="item-price">23 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-special-tea-ginger">
+                        <div class="item-header">
+                            <h3 class="item-name">Special Hot Tea Ginger & Lemon</h3>
+                        </div>
+                        <span class="item-price">23 lei</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Refreshers Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Refreshers</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-fresh-portocale">
+                        <div class="item-header">
+                            <h3 class="item-name">Fresh Portocale</h3>
+                        </div>
+                        <span class="item-price">17 lei / 22 lei</span>
+                        <p class="item-description">250ml / 400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-fresh-grapefruit">
+                        <div class="item-header">
+                            <h3 class="item-name">Fresh Grapefruit</h3>
+                        </div>
+                        <span class="item-price">17 lei / 22 lei</span>
+                        <p class="item-description">250ml / 400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-fresh-mixt">
+                        <div class="item-header">
+                            <h3 class="item-name">Fresh Mixt</h3>
+                        </div>
+                        <span class="item-price">17 lei / 22 lei</span>
+                        <p class="item-description">250ml / 400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-limonada">
+                        <div class="item-header">
+                            <h3 class="item-name">Limonadă</h3>
+                        </div>
+                        <span class="item-price">17 lei / 22 lei</span>
+                    </div>
+                    <div class="menu-item-detailed item-classic-lemonade">
+                        <div class="item-header">
+                            <h3 class="item-name">Classic Lemonade</h3>
+                        </div>
+                        <span class="item-price">21 lei</span>
+                        <p class="item-description">400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-mint-lemonade">
+                        <div class="item-header">
+                            <h3 class="item-name">Mint Lemonade</h3>
+                        </div>
+                        <span class="item-price">24 lei</span>
+                        <p class="item-description">400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-passion-lemonade">
+                        <div class="item-header">
+                            <h3 class="item-name">Passion Fruit Lemonade</h3>
+                        </div>
+                        <span class="item-price">23 lei</span>
+                        <p class="item-description">400ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-strawberry-lemonade">
+                        <div class="item-header">
+                            <h3 class="item-name">Strawberry Lemonade</h3>
+                        </div>
+                        <span class="item-price">24 lei</span>
+                        <p class="item-description">400ml</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smoothies Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Smoothies</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-strawberry-smoothie">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Strawberry Smoothie</h3>
+                                <span class="item-size">400ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">26 lei</span>
+                        <p class="item-description">Capsuni, banane, coacaze rosii, portocale, mere, lapte, sirop de miere</p>
+                    </div>
+                    <div class="menu-item-detailed item-nutty-smoothie">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">Nutty Smoothie</h3>
+                                <span class="item-size">400ml</span>
+                            </div>
+                        </div>
+                        <span class="item-price">26 lei</span>
+                        <p class="item-description">Banane, unt de arahide, lapte, sirop de artar</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Non Alcoholic Cocktails Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Cocktail-uri Non-Alcoolice</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-coconut-citrus">
+                        <div class="item-header">
+                            <h3 class="item-name">Coconut Citrus</h3>
+                        </div>
+                        <span class="item-price">30 lei</span>
+                        <p class="item-description">Fresh grapefruit 90ml, sirop cocos 25ml, fresh lămâie 10ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-berry-blossom">
+                        <div class="item-header">
+                            <h3 class="item-name">Berry Blossom</h3>
+                        </div>
+                        <span class="item-price">30 lei</span>
+                        <p class="item-description">Căpșuni 10g, sirop căpșuni 15ml, sirop de soc 10ml, fresh lămâie 15ml, apă tonică 40ml</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Soft Drinks Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Băuturi Răcoritoare</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-coca-cola">
+                        <div class="item-header">
+                            <h3 class="item-name">Coca Cola</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-coca-cola-zero">
+                        <div class="item-header">
+                            <h3 class="item-name">Coca Cola Zero</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-fanta">
+                        <div class="item-header">
+                            <h3 class="item-name">Fanta</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-sprite">
+                        <div class="item-header">
+                            <h3 class="item-name">Sprite</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-schweppes">
+                        <div class="item-header">
+                            <h3 class="item-name">Schweppes Tonic</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-schweppes">
+                        <div class="item-header">
+                            <h3 class="item-name">Schweppes Bitter Lemon</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">250ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-dorna">
+                        <div class="item-header">
+                            <h3 class="item-name">Dorna Plată / Minerală</h3>
+                        </div>
+                        <span class="item-price">14 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beer Section -->
+            <div class="menu-category slide-up">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h2 class="category-title">Bere</h2>
+                    <span class="category-arrow">▼</span>
+                </div>
+                <div class="category-content">
+                    <div class="menu-items">
+                    <div class="menu-item-detailed item-corona">
+                        <div class="item-header">
+                            <h3 class="item-name">Corona</h3>
+                        </div>
+                        <span class="item-price">20 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-leffe-blonde">
+                        <div class="item-header">
+                            <h3 class="item-name">Leffe Blonde</h3>
+                        </div>
+                        <span class="item-price">25 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-leffe-brune">
+                        <div class="item-header">
+                            <h3 class="item-name">Leffe Brune</h3>
+                        </div>
+                        <span class="item-price">25 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-stella">
+                        <div class="item-header">
+                            <h3 class="item-name">Stella Artois</h3>
+                        </div>
+                        <span class="item-price">17 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    <div class="menu-item-detailed item-stella">
+                        <div class="item-header">
+                            <h3 class="item-name">Stella Artois 0.0</h3>
+                        </div>
+                        <span class="item-price">17 lei</span>
+                        <p class="item-description">330ml</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-footer">
+            <p>Toate băuturile noastre sunt preparate cu ingrediente proaspete și de calitate</p>
+            <p style="margin-top: 0.5rem; font-size: 1rem; opacity: 0.8;">Prețurile pot varia. Vă rugăm să ne contactați pentru informații actualizate.</p>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.6; font-style: italic;">Made with ❤️ by <a href="https://www.facebook.com/luca.andrei.758/" target="_blank" rel="noopener noreferrer">Luca Andrei</a></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleCategory(header) {
+            const category = header.closest('.menu-category');
+            const content = category.querySelector('.category-content');
+            const isOpen = content.classList.contains('open');
+            
+            if (isOpen) {
+                content.classList.remove('open');
+                header.classList.remove('active');
+            } else {
+                content.classList.add('open');
+                header.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+
